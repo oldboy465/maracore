@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MARACORE // Embedded Cloud Deployment & Hardware Telemetry Engine</title>
+  <meta name="description" content="Framework para ESP32 de continuous deployment via GitHub, dual partition OTA com anti-brick e diagnóstico I2C ativo.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #070a12;
+      --bg-alt: #0c1220;
+      --card-bg: #11192c;
+      --card-hover: #15223c;
+      --border: #1f304f;
+      --border-bright: #2d4672;
+      --primary: #00d2ff;
+      --primary-dim: rgba(0, 210, 255, 0.12);
+      --primary-glow: rgba(0, 210, 255, 0.35);
+      --accent: #3a86ff;
+      --success: #00f5a0;
+      --warn: #ffbe0b;
+      --danger: #ff0055;
+      --text: #f3f6fc;
+      --text-muted: #8295b8;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 210, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(58, 134, 255, 0.05) 0%, transparent 40%),
+        linear-gradient(to right, rgba(31, 48, 79, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(31, 48, 79, 0.15) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    }
+
+    /* BARRA SUPERIOR REGIONAL */
+    .geo-header {
+      width: 100%;
+      background: rgba(12, 18, 32, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--mono);
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--primary);
+      text-shadow: 0 0 10px var(--primary-glow);
+      font-size: 1.05rem;
+    }
+
+    .status-pulse {
+      width: 10px;
+      height: 10px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--success);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+
+    .flags-cluster {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .flag-card {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      color: var(--text-muted);
+      font-weight: 600;
+      transition: border-color 0.2s ease;
+    }
+
+    .flag-card:hover {
+      border-color: var(--primary);
+      color: var(--text);
+    }
+
+    .flag-icon {
+      width: 22px;
+      height: 15px;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      display: block;
+    }
+
+    /* CONTAINER PRINCIPAL */
+    .wrapper {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem 5rem;
+      position: relative;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-dim);
+      border: 1px solid var(--primary);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, #ffffff 40%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 0 auto 2.5rem;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .cta-cluster {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: var(--mono);
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 0.9rem 1.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--bg);
+      border: 1px solid var(--primary);
+      box-shadow: 0 0 25px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      background: #4ae0ff;
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 210, 255, 0.5);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-bright);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      background: var(--primary-dim);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    /* SEÇÕES E GRIDS */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-title::before {
+      content: '//';
+      color: var(--primary);
+      font-family: var(--mono);
+      font-size: 1.4rem;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
+      transition: 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      background: var(--card-hover);
+    }
+
+    .feature-card:hover::before {
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .card-icon {
+      font-family: var(--mono);
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      display: inline-block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+    }
+
+    .feature-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* DIAGRAMA INTERATIVO / FLUXO OTA */
+    .flow-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2.5rem 1.5rem;
+      margin-bottom: 4rem;
+      position: relative;
+    }
+
+    .nodes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .flow-node {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.4rem;
+      text-align: center;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .flow-node:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-dim);
+    }
+
+    .node-step {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--primary);
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 0.4rem;
+    }
+
+    .node-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .node-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--mono);
+    }
+
+    .signal-track {
+      height: 4px;
+      background: var(--border);
+      width: 100%;
+      margin: 2rem 0 1rem;
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .signal-beam {
+      position: absolute;
+      top: 0;
+      left: -20%;
+      width: 25%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      animation: signalFlow 2.8s infinite linear;
+    }
+
+    @keyframes signalFlow {
+      0% { left: -25%; }
+      100% { left: 100%; }
+    }
+
+    /* SIMULADOR CONSOLE / TERMINAL */
+    .terminal-box {
+      background: #05080f;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: var(--mono);
+      margin-bottom: 4rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    }
+
+    .terminal-topbar {
+      background: #0d1424;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+
+    .terminal-body {
+      padding: 1.5rem;
+      color: #b9c7df;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+
+    .term-line {
+      margin-bottom: 0.35rem;
+      display: flex;
+      gap: 8px;
+    }
+
+    .term-ts {
+      color: var(--text-muted);
+      user-select: none;
+    }
+
+    .term-tag {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .term-ok {
+      color: var(--success);
+    }
+
+    .term-warn {
+      color: var(--warn);
+    }
+
+    .term-crit {
+      color: var(--danger);
+    }
+
+    /* TABELA DE PARTIÇÕES */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 4rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg-alt);
+      color: var(--primary);
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+    }
+
+    td {
+      padding: 0.9rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(0, 210, 255, 0.03);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .pill-ota {
+      background: rgba(0, 210, 255, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+    }
+
+    .pill-sys {
+      background: rgba(255, 190, 11, 0.15);
+      color: var(--warn);
+      border: 1px solid rgba(255, 190, 11, 0.3);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+      margin-top: 4rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-flags {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- BARRA DE LOCALIZAÇÃO GEOGRÁFICA & IDENTIFICAÇÃO -->
+  <header class="geo-header">
+    <div class="brand-mark">
+      <div class="status-pulse"></div>
+      MARACORE // CLOUD ENGINE
+    </div>
+
+    <div class="flags-cluster">
+      <!-- Bandeira do Maranhão (SVG Vetorial Preciso) -->
+      <div class="flag-card" title="Maranhão - Brasil">
+        <svg class="flag-icon" viewBox="0 0 27 18" xmlns="http://www.w3.org/2000/svg">
+          <rect width="27" height="2" y="0" fill="#ffffff"/>
+          <rect width="27" height="2" y="2" fill="#d81e05"/>
+          <rect width="27" height="2" y="4" fill="#000000"/>
+          <rect width="27" height="2" y="6" fill="#ffffff"/>
+          <rect width="27" height="2" y="8" fill="#d81e05"/>
+          <rect width="27" height="2" y="10" fill="#000000"/>
+          <rect width="27" height="2" y="12" fill="#ffffff"/>
+          <rect width="27" height="2" y="14" fill="#d81e05"/>
+          <rect width="27" height="2" y="16" fill="#000000"/>
+          <rect width="9" height="9" fill="#002b7f"/>
+          <polygon points="4.5,1.5 5.4,4.2 8.2,4.2 6.0,5.9 6.8,8.5 4.5,6.9 2.2,8.5 3.0,5.9 0.8,4.2 3.6,4.2" fill="#ffffff"/>
+        </svg>
+        <span>MA</span>
+      </div>
+
+      <!-- Bandeira do Piauí (SVG Vetorial Preciso) -->
+      <div class="flag-card" title="Piauí - Brasil">
+        <svg class="flag-icon" viewBox="0 0 27 18" xmlns="http://www.w3.org/2000/svg">
+          <rect width="27" height="2.57" y="0" fill="#00923f"/>
+          <rect width="27" height="2.57" y="2.57" fill="#f8d117"/>
+          <rect width="27" height="2.57" y="5.14" fill="#00923f"/>
+          <rect width="27" height="2.57" y="7.71" fill="#f8d117"/>
+          <rect width="27" height="2.57" y="10.28" fill="#00923f"/>
+          <rect width="27" height="2.57" y="12.85" fill="#f8d117"/>
+          <rect width="27" height="2.57" y="15.42" fill="#00923f"/>
+          <rect width="9" height="9" fill="#d81e05"/>
+          <polygon points="4.5,1.8 5.3,4.2 7.7,4.2 5.8,5.7 6.5,8.1 4.5,6.6 2.5,8.1 3.2,5.7 1.3,4.2 3.7,4.2" fill="#ffffff"/>
+        </svg>
+        <span>PI</span>
+      </div>
+
+      <!-- Bandeira do Brasil (SVG Vetorial Preciso) -->
+      <div class="flag-card" title="Brasil">
+        <svg class="flag-icon" viewBox="0 0 27 18" xmlns="http://www.w3.org/2000/svg">
+          <rect width="27" height="18" fill="#009c3b"/>
+          <polygon points="13.5,2 25,9 13.5,16 2,9" fill="#ffdf00"/>
+          <circle cx="13.5" cy="9" r="4.2" fill="#002776"/>
+          <path d="M 9.5,9.8 A 4.2 4.2 0 0 1 17.5,7.7" stroke="#ffffff" stroke-width="0.8" fill="none"/>
+        </svg>
+        <span>BR</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrapper">
+    
+    <!-- HERO PRINCIPAL -->
+    <section class="hero">
+      <div class="hero-tag">
+        <span>●</span> FIRMWARE CONTINUOUS DEPLOYMENT ENGINE
+      </div>
+      <h1>Provisionamento Remoto &<br>Telemetria de Baixo Nível</h1>
+      <p>
+        O MARACORE substitui cartões físicos de memória por uma arquitetura de distribuição contínua para ESP32, realizando gravação OTA simétrica direta do GitHub, validação anti-rollback e scanner ativo de barramento.
+      </p>
+      <div class="cta-cluster">
+        <a href="#pipeline" class="btn btn-primary">Arquitetura de Execução</a>
+        <a href="#code" class="btn btn-outline">Especificação Técnica</a>
+      </div>
+    </section>
+
+    <!-- TRÊS PILARES DE ENGENHARIA -->
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="card-icon">&lt;/&gt;</div>
+        <h3>Injeção Direta via CDN</h3>
+        <p>
+          Download em stream HTTPS criptografado da infraestrutura raw do GitHub. Negociação TLS seletiva poupando 30 KB de Heap para manter a estabilidade da pilha do RTOS durante gravações extensas.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-icon">0xE9</div>
+        <h3>Verificação Binária & Anti-Brick</h3>
+        <p>
+          Validação estrita do Magic Byte do ESP32 (<code>0xE9</code>) no primeiro bloco de transferência e timer de observação operacional pós-boot. Rollback automático em caso de falha de software.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-icon">0x7F</div>
+        <h3>Scanner de Periféricos I2C</h3>
+        <p>
+          Varredura síncrona dos endereços <code>0x01</code> a <code>0x7F</code> com detecção imediata de sensores de ambiente, displays OLED e barramentos anexos sem bloqueio do loop principal.
+        </p>
+      </div>
+    </div>
+
+    <!-- FLUXO TÉCNICO INTERATIVO -->
+    <div class="section-title" id="pipeline">Pipeline Operacional de Deploy Contínuo</div>
+    <div class="section-subtitle">Mapeamento do ciclo de vida da imagem do commit no repositório até a ativação na partição Flash.</div>
+
+    <div class="flow-container">
+      <div class="nodes-grid">
+        <div class="flow-node">
+          <div class="node-step">FASE 01</div>
+          <div class="node-title">GitHub CDN</div>
+          <div class="node-desc">raw.githubusercontent.com<br>/****** / repo / main / bin</div>
+        </div>
+
+        <div class="flow-node">
+          <div class="node-step">FASE 02</div>
+          <div class="node-title">ESP32 Client</div>
+          <div class="node-desc">Stream TLS sem CA Root<br>Heap preservada > 120 KB</div>
+        </div>
+
+        <div class="flow-node">
+          <div class="node-step">FASE 03</div>
+          <div class="node-title">Magic Check</div>
+          <div class="node-desc">Verificação byte[0] == 0xE9<br>Prevenção de bin corrompido</div>
+        </div>
+
+        <div class="flow-node">
+          <div class="node-step">FASE 04</div>
+          <div class="node-title">Slot Inativo</div>
+          <div class="node-desc">Gravação física em app0/app1<br>otadata aponta novo boot</div>
+        </div>
+      </div>
+
+      <div class="signal-track">
+        <div class="signal-beam"></div>
+      </div>
+
+      <div style="text-align: center; font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">
+        STATUS: AGUARDANDO DISPARO REST EM <code>/maracore/api/github-flash</code>
+      </div>
+    </div>
+
+    <!-- TERMINAL LIVE MONITOR -->
+    <div class="section-title">Log Serial de Operação em Tempo Real</div>
+    <div class="section-subtitle">Saída padrão capturada via UART (115200 bps) durante um ciclo de deployment.</div>
+
+    <div class="terminal-box">
+      <div class="terminal-topbar">
+        <div class="window-dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">UART0 // 115200 8N1 // MARACORE-ENGINE</div>
+        <div></div>
+      </div>
+      <div class="terminal-body">
+        <div class="term-line"><span class="term-ts">[00:00:00.102]</span> <span class="term-tag">[SYSTEM]</span> Inicializando Firmware com modulo MARACORE...</div>
+        <div class="term-line"><span class="term-ts">[00:00:00.320]</span> <span class="term-tag">[MARACORE]</span> Particao Ativa: [app0] | Particao Alvo OTA: [app1]</div>
+        <div class="term-line"><span class="term-ts">[00:00:00.345]</span> <span class="term-tag">[MARACORE]</span> SoftAP configurado: SSID: MARACORE-ATALAIA3 | IP: 192.168.4.1</div>
+        <div class="term-line"><span class="term-ts">[00:00:01.012]</span> <span class="term-tag">[I2C_SCAN]</span> Varredura concluida. Dispositivos ACK: [0x3C, 0x68]</div>
+        <div class="term-line"><span class="term-ts">[00:00:05.420]</span> <span class="term-tag">[WIFI_STA]</span> Conectado com sucesso. IP Estacao: 192.168.1.145 | RSSI: -58 dBm</div>
+        <div class="term-line"><span class="term-ts">[00:00:10.005]</span> <span class="term-tag">[WATCHDOG]</span> <span class="term-ok">Boot validado. esp_ota_mark_app_valid_cancel_rollback() executado.</span></div>
+        <div class="term-line"><span class="term-ts">[00:01:22.140]</span> <span class="term-tag">[HTTP_REQ]</span> POST /maracore/api/github-flash recebido para repo [******]</div>
+        <div class="term-line"><span class="term-ts">[00:01:22.450]</span> <span class="term-tag">[TLS_DOWN]</span> Conectando a raw.githubusercontent.com via porta 443...</div>
+        <div class="term-line"><span class="term-ts">[00:01:23.110]</span> <span class="term-tag">[SECURITY]</span> <span class="term-ok">Primeiro bloco lido: Magic Byte 0xE9 validado com sucesso.</span></div>
+        <div class="term-line"><span class="term-ts">[00:01:28.980]</span> <span class="term-tag">[FLASH_OP]</span> 1.482.624 bytes gravados em app1. Setores Flash sincronizados.</div>
+        <div class="term-line"><span class="term-ts">[00:01:29.100]</span> <span class="term-tag">[BOOTLOAD]</span> <span class="term-ok">esp_ota_set_boot_partition(&app1) aplicado. Reiniciando hardware...</span></div>
+      </div>
+    </div>
+
+    <!-- TABELA DE MEMÓRIA E PARTIÇÕES -->
+    <div class="section-title" id="code">Topologia da Memória Flash (4MB SPI)</div>
+    <div class="section-subtitle">Tabela customizada simétrica com suporte nativo a esp_ota_ops.h.</div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome do Setor</th>
+            <th>Tipo</th>
+            <th>Subtipo</th>
+            <th>Offset</th>
+            <th>Tamanho</th>
+            <th>Função Operacional</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>nvs</strong></td>
+            <td>data</td>
+            <td>nvs</td>
+            <td><code>0x009000</code></td>
+            <td>20 KB</td>
+            <td><span class="pill pill-sys">Sistema</span> Credenciais Wi-Fi, calibrações de sensores</td>
+          </tr>
+          <tr>
+            <td><strong>otadata</strong></td>
+            <td>data</td>
+            <td>ota</td>
+            <td><code>0x00e000</code></td>
+            <td>8 KB</td>
+            <td><span class="pill pill-sys">Sistema</span> Registro de bootloader e ponteiro de partição ativa</td>
+          </tr>
+          <tr>
+            <td><strong>app0</strong></td>
+            <td>app</td>
+            <td>ota_0</td>
+            <td><code>0x010000</code></td>
+            <td>1.920 KB</td>
+            <td><span class="pill pill-ota">OTA Slot 0</span> Imagem estável / Firmware primário</td>
+          </tr>
+          <tr>
+            <td><strong>app1</strong></td>
+            <td>app</td>
+            <td>ota_1</td>
+            <td><code>0x1F0000</code></td>
+            <td>1.920 KB</td>
+            <td><span class="pill pill-ota">OTA Slot 1</span> Imagem de Continuous Deployment / GitHub Raw</td>
+          </tr>
+          <tr>
+            <td><strong>spiffs</strong></td>
+            <td>data</td>
+            <td>spiffs</td>
+            <td><code>0x3D0000</code></td>
+            <td>192 KB</td>
+            <td><span class="pill pill-sys">Sistema</span> Armazenamento local de assets e payloads JSON</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DOCUMENTAÇÃO DA API REST EMBUTIDA -->
+    <div class="section-title">Controle do Sistema via Endpoints REST</div>
+    <div class="section-subtitle">Interface HTTP síncrona fornecida pelo ESP32 na porta 80.</div>
+
+    <div class="grid-3">
+      <div class="feature-card">
+        <h3 style="font-family: var(--mono); font-size: 0.95rem; color: var(--primary);">GET /maracore/api/diagnostics</h3>
+        <p style="margin-top: 0.6rem;">
+          Retorna payload JSON contendo Heap livre, frequência de clock da CPU, tempo de atividade, RSSI da conexão Wi-Fi e identificador da partição em execução.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <h3 style="font-family: var(--mono); font-size: 0.95rem; color: var(--primary);">GET /maracore/api/i2c-scan</h3>
+        <p style="margin-top: 0.6rem;">
+          Varre os endereços do barramento físico I2C e retorna uma lista formatada contendo todos os identificadores hexadecimais que responderam com bit ACK.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <h3 style="font-family: var(--mono); font-size: 0.95rem; color: var(--primary);">POST /maracore/api/github-flash</h3>
+        <p style="margin-top: 0.6rem;">
+          Inicia o processo de aquisição do arquivo <code>firmware.bin</code> do repositório indicado via CDN segura, escreve na partição inativa e aciona o reboot.
+        </p>
+      </div>
+    </div>
+
+    <!-- RODAPÉ TÉCNICO REGIONAL -->
+    <footer>
+      <div class="footer-flags">
+        <div class="flag-card">
+          <svg class="flag-icon" viewBox="0 0 27 18" xmlns="http://www.w3.org/2000/svg">
+            <rect width="27" height="2" y="0" fill="#ffffff"/>
+            <rect width="27" height="2" y="2" fill="#d81e05"/>
+            <rect width="27" height="2" y="4" fill="#000000"/>
+            <rect width="27" height="2" y="6" fill="#ffffff"/>
+            <rect width="27" height="2" y="8" fill="#d81e05"/>
+            <rect width="27" height="2" y="10" fill="#000000"/>
+            <rect width="27" height="2" y="12" fill="#ffffff"/>
+            <rect width="27" height="2" y="14" fill="#d81e05"/>
+            <rect width="27" height="2" y="16" fill="#000000"/>
+            <rect width="9" height="9" fill="#002b7f"/>
+            <polygon points="4.5,1.5 5.4,4.2 8.2,4.2 6.0,5.9 6.8,8.5 4.5,6.9 2.2,8.5 3.0,5.9 0.8,4.2 3.6,4.2" fill="#ffffff"/>
+          </svg>
+          <span>Maranhão</span>
+        </div>
+        <div class="flag-card">
+          <svg class="flag-icon" viewBox="0 0 27 18" xmlns="http://www.w3.org/2000/svg">
+            <rect width="27" height="2.57" y="0" fill="#00923f"/>
+            <rect width="27" height="2.57" y="2.57" fill="#f8d117"/>
+            <rect width="27" height="2.57" y="5.14" fill="#00923f"/>
+            <rect width="27" height="2.57" y="7.71" fill="#f8d117"/>
+            <rect width="27" height="2.57" y="10.28" fill="#00923f"/>
+            <rect width="27" height="2.57" y="12.85" fill="#f8d117"/>
+            <rect width="27" height="2.57" y="15.42" fill="#00923f"/>
+            <rect width="9" height="9" fill="#d81e05"/>
+            <polygon points="4.5,1.8 5.3,4.2 7.7,4.2 5.8,5.7 6.5,8.1 4.5,6.6 2.5,8.1 3.2,5.7 1.3,4.2 3.7,4.2" fill="#ffffff"/>
+          </svg>
+          <span>Piauí</span>
+        </div>
+        <div class="flag-card">
+          <svg class="flag-icon" viewBox="0 0 27 18" xmlns="http://www.w3.org/2000/svg">
+            <rect width="27" height="18" fill="#009c3b"/>
+            <polygon points="13.5,2 25,9 13.5,16 2,9" fill="#ffdf00"/>
+            <circle cx="13.5" cy="9" r="4.2" fill="#002776"/>
+            <path d="M 9.5,9.8 A 4.2 4.2 0 0 1 17.5,7.7" stroke="#ffffff" stroke-width="0.8" fill="none"/>
+          </svg>
+          <span>Brasil</span>
+        </div>
+      </div>
+      <p style="font-family: var(--mono); letter-spacing: 0.5px;">MARACORE CLOUD ENGINE // ENGENHARIA DE SISTEMAS EMBARCADOS</p>
+      <p style="font-size: 0.78rem; margin-top: 0.4rem; color: #5a6e8f;">Desenvolvido segundo o padrão técnico ASD-STE100. Sem credenciais estáticas expostas no código-fonte.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // Atualização dinâmica do feixe e interação com os nós
+    document.querySelectorAll('.flow-node').forEach((node, index) => {
+      node.addEventListener('mouseenter', () => {
+        node.style.transform = 'scale(1.04)';
+      });
+      node.addEventListener('mouseleave', () => {
+        node.style.transform = 'scale(1)';
+      });
+    });
+  </script>
+</body>
+</html>
