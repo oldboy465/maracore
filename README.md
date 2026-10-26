@@ -11,14 +11,7 @@
 
 <br/>
 
-<!-- BANDEIRAS REGIONAIS E NACIONAL (RENDERIZADAS VIA WIKIMEDIA COMMONS THUMBNAILS) -->
-<p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Bandeira_do_Maranh%C3%A3o.svg/45px-Bandeira_do_Maranh%C3%A3o.svg.png" width="38" height="25" alt="Maranhão" style="border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.5);" />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Bandeira_do_Piau%C3%AD.svg/45px-Bandeira_do_Piau%C3%AD.svg.png" width="38" height="25" alt="Piauí" style="border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.5);" />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/45px-Flag_of_Brazil.svg.png" width="38" height="26" alt="Brasil" style="border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.5);" />
-</p>
+
 
 ```
   __  __          _____             _____ ____  _____  ______ 
