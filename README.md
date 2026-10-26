@@ -1,171 +1,180 @@
-```markdown
 <div align="center">
 
 # ⚡ MARACORE // CLOUD ENGINE ⚡
 ### CONTINUOUS DEPLOYMENT (CD) & HARDWARE TELEMETRY FRAMEWORK FOR ESP32
 
-[![Hardware](https://img.shields.io/badge/Hardware-ESP32%20DevKit%20V1-00d2ff?style=for-the-badge&logo=espressif&logoColor=white)](#)
-[![Framework](https://img.shields.io/badge/Framework-Arduino%20%2F%20ESP--IDF-3a86ff?style=for-the-badge&logo=c%2B%2B&logoColor=white)](#)
+[![Hardware](https://img.shields.io/badge/Hardware-ESP32%20DevKit%20V1%20(4MB)-00d2ff?style=for-the-badge&logo=espressif&logoColor=white)](#)
+[![Framework](https://img.shields.io/badge/Framework-Arduino%20%2F%20ESP--IDF%20v4.4%2B-3a86ff?style=for-the-badge&logo=c%2B%2B&logoColor=white)](#)
 [![OTA](https://img.shields.io/badge/OTA-Dual%20Partition%20Anti--Rollback-00f5a0?style=for-the-badge&logo=git&logoColor=white)](#)
-[![Licença](https://img.shields.io/badge/License-MIT-ffbe0b?style=for-the-badge)](#)
 [![Security](https://img.shields.io/badge/Auth-Zero%20Hardcoded%20Secrets-ff0055?style=for-the-badge)](#)
+[![Standard](https://img.shields.io/badge/Technical%20Standard-ASD--STE100%20PT--BR-ffbe0b?style=for-the-badge)](#)
 
 <br/>
 
-<!-- VETOR DAS BANDEIRAS COM SVG INLINE -->
+<!-- BANDEIRAS REGIONAIS E NACIONAL (RENDERIZADAS VIA WIKIMEDIA COMMONS THUMBNAILS) -->
 <p align="center">
-  <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 18' width='36' height='24'><rect width='27' height='2' y='0' fill='%23fff'/><rect width='27' height='2' y='2' fill='%23d81e05'/><rect width='27' height='2' y='4' fill='%23000'/><rect width='27' height='2' y='6' fill='%23fff'/><rect width='27' height='2' y='8' fill='%23d81e05'/><rect width='27' height='2' y='10' fill='%23000'/><rect width='27' height='2' y='12' fill='%23fff'/><rect width='27' height='2' y='14' fill='%23d81e05'/><rect width='27' height='2' y='16' fill='%23000'/><rect width='9' height='9' fill='%23002b7f'/><polygon points='4.5,1.5 5.4,4.2 8.2,4.2 6.0,5.9 6.8,8.5 4.5,6.9 2.2,8.5 3.0,5.9 0.8,4.2 3.6,4.2' fill='%23fff'/></svg>" alt="Maranhão" />
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 18' width='36' height='24'><rect width='27' height='2.57' y='0' fill='%2300923f'/><rect width='27' height='2.57' y='2.57' fill='%23f8d117'/><rect width='27' height='2.57' y='5.14' fill='%2300923f'/><rect width='27' height='2.57' y='7.71' fill='%23f8d117'/><rect width='27' height='2.57' y='10.28' fill='%2300923f'/><rect width='27' height='2.57' y='12.85' fill='%23f8d117'/><rect width='27' height='2.57' y='15.42' fill='%2300923f'/><rect width='9' height='9' fill='%23d81e05'/><polygon points='4.5,1.8 5.3,4.2 7.7,4.2 5.8,5.7 6.5,8.1 4.5,6.6 2.5,8.1 3.2,5.7 1.3,4.2 3.7,4.2' fill='%23fff'/></svg>" alt="Piauí" />
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 18' width='36' height='24'><rect width='27' height='18' fill='%23009c3b'/><polygon points='13.5,2 25,9 13.5,16 2,9' fill='%23ffdf00'/><circle cx='13.5' cy='9' r='4.2' fill='%23002776'/><path d='M 9.5,9.8 A 4.2 4.2 0 0 1 17.5,7.7' stroke='%23fff' stroke-width='0.8' fill='none'/></svg>" alt="Brasil" />
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Bandeira_do_Maranh%C3%A3o.svg/45px-Bandeira_do_Maranh%C3%A3o.svg.png" width="38" height="25" alt="Maranhão" style="border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.5);" />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Bandeira_do_Piau%C3%AD.svg/45px-Bandeira_do_Piau%C3%AD.svg.png" width="38" height="25" alt="Piauí" style="border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.5);" />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/45px-Flag_of_Brazil.svg.png" width="38" height="26" alt="Brasil" style="border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.5);" />
 </p>
 
-
 ```
+  __  __          _____             _____ ____  _____  ______ 
+ |  \/  |   /\   |  __ \   /\      / ____/ __ \|  __ \|  ____|
+ | \  / |  /  \  | |__) | /  \    | |   | |  | | |__) | |__   
+ | |\/| | / /\ \ |  _  / / /\ \   | |   | |  | |  _  /|  __|  
+ | |  | |/ ____ \| | \ \/ ____ \  | |___| |__| | | \ \| |____ 
+ |_|  |_/_/    \_\_|  \_\_/    \_\  \_____\____/|_|  \_\______|
+```
+
+**Framework embarcado de alta disponibilidade projetado para substituir mídias físicas microSD por entrega contínua (CD) de binários diretamente da CDN raw do GitHub, com proteção nativa contra corrupção (Dual Partition Anti-Brick), varredura ativa de barramento I2C e telemetria profunda de sistema.**
 
 ---
 
-|  /  |   /\   |  __ \   /\      / / __ |  __ |  **|
-| \  / |  /  \  | |**) | /  \    | |   | |  | | |**) | |**
-
-| |/| | / /\ \ |  _  / / /\ \   | |   | |  | |  _  /|  |
-
-| |  | |/ ____ | | \ / ____ \  | || |__| | | \ | |
-||  |*/*/    __|  __/    _\  _****_***/|*|  _______|
-
-```
-
-> **Framework de nível industrial para substituição de mídias físicas microSD por entrega contínua de firmware diretamente dos servidores do GitHub, com proteção contra travamento (Anti-Brick Rollback), gerenciamento de conectividade NVS e diagnóstico físico do barramento I2C.**
+### 🌐 [ACESSAR PAINEL DE CONTROLE / DEMO ONLINE](https://******.github.io/maracore/)
 
 </div>
 
----
+<br/>
 
-## 📑 ÍNDICE GERAL
-
-- [1. Visão Geral da Arquitetura](#1-visão-geral-da-arquitetura)
-- [2. Diagrama de Sequência do Ciclo de Vida (UML)](#2-diagrama-de-sequência-do-ciclo-de-vida-uml)
-- [3. Topologia da Memória Flash SPI](#3-topologia-da-memória-flash-spi)
-- [4. Especificação Técnica ASD-STE100](#4-especificação-técnica-asd-ste100)
-- [5. Mecanismo de Proteção e Anti-Rollback](#5-mecanismo-de-proteção-e-anti-rollback)
-- [6. Estrutura dos Arquivos do Framework](#6-estrutura-dos-arquivos-do-framework)
-- [7. Como Integrar em Novos Projetos](#7-como-integrar-em-novos-projetos)
-- [8. Manual de Operação da API REST Embutida](#8-manual-de-operação-da-api-rest-embutida)
-- [9. Organização dos Repositórios de Origem](#9-organização-dos-repositórios-de-origem)
-- [10. Segurança e Política de Credenciais](#10-segurança-e-política-de-credenciais)
+> [!IMPORTANT]
+> **PROVISÃO ZERO SECRETS:** Este projeto adota isolamento estrito de credenciais. Nenhuma chave de API privada, token pessoal de acesso (PAT), SSID residencial ou senha de rede permanece exposta no código-fonte. O provisionamento de rede é configurado de forma não-volátil diretamente na partição NVS.
 
 ---
 
-## 1. VISÃO GERAL DA ARQUITETURA
+## 📋 MATRIZ DE RECURSOS E DIFERENCIAIS
 
-O **MARACORE** redefine o provisionamento de sistemas microcontrolados baseados no processador **Espressif ESP32**. Em sistemas IoT convencionais, a atualização de código em campo depende da extração mecânica de cartões de memória microSD ou de conexões físicas seriais USB-UART, o que acarreta:
+| Recurso | Implementação MARACORE | Abordagens Convencionais |
+| :--- | :--- | :--- |
+| **Vetor de Atualização** | **CDN GitHub Raw via TLS Direto** | Cartão microSD mecânico ou cabo USB |
+| **Topologia Flash** | **Particionamento Duplo Simétrico (2x 1.920 KB)** | Partição única sem redundância |
+| **Prevenção Anti-Brick** | **Máquina de Estados de Bootloader com Rollback** | Dispositivo inoperante se houver *Kernel Panic* |
+| **Validação Binária** | **Checagem estrita de Magic Byte (`0xE9`) no Bloco 0** | Gravação cega de qualquer payload HTTP recebido |
+| **Diagnóstico de Barramento**| **Varredura Ativa I2C (`0x01` a `0x7F`) em tempo real** | Sem visualização de periféricos conectados |
+| **Processamento Visual** | **Client-Side Rendering (SPA Vanilla JS em PROGMEM)** | Páginas pesadas renderizadas na CPU do microcontrolador |
+| **Consumo de Memória** | **Heap otimizada (> 120 KB livres durante OTA)** | Estouro de buffer de socket TLS (*Heap Exhaustion*) |
 
-- Desgaste físico dos contatos elétricos e risco de corrupção do sistema de arquivos FAT32.
-- Necessidade de intervenção presencial no local de instalação da estação embarcada.
-- Inviabilidade de reversão automática caso o novo firmware contenha erros de ponteiro ou travamentos (*Kernel Panic*).
+---
 
-O framework desacopla a camada de distribuição de software e introduz um pipeline de **Entrega Contínua (Continuous Deployment)**:
+## 🏗️ 1. VISÃO GERAL DA ENGENHARIA DO SISTEMA
 
+A substituição de cartões de memória microSD por distribuição em nuvem resolve falhas mecânicas crônicas em sistemas embarcados expostos a variações térmicas, vibração contínua e umidade. O **MARACORE** atua como uma camada de abstração de baixo nível posicionada entre a aplicação hospedeira e o subsistema de boot do ESP32.
 
 ```
-
-[ GITHUB REPOSITORY ]
-│  Branch: main
-│  Artefato: firmware.bin
-│
-▼ (HTTPS / TLS Direto)
-[ ESP32 DEV ENGINE ] ── (Modo AP + STA) ──> [ NAVEGADOR DO CLIENTE ]
-│                                                 │
-├── Validação Magic Byte (0xE9)                   ├── Painel SPA (Vanilla JS)
-├── Gravação Direta no Slot Inativo               ├── Scanner I2C Visual
-└── Inversão de Ponteiro de Boot (otadata)        └── Seletor de Redes Wi-Fi
-
++---------------------------------------------------------------------------------------+
+|                                    NUVEM GITHUB                                       |
+|  Repositorio Publico: [https://github.com/******/](https://github.com/******/)<repositorio>                        |
+|  Branch Padrao: main | Artefato Compilado: firmware.bin                                |
++-------------------------------------------+-------------------------------------------+
+                                            |
+                                 (HTTPS / TLS Porta 443)
+                                            |
+                                            v
++---------------------------------------------------------------------------------------+
+|                                 DISPOSITIVO ESP32                                     |
+|                                                                                       |
+|   [ MODO HIBRIDO WIFI_AP_STA ]                                                        |
+|   ├── SoftAP Local Aberto: SSID "MARACORE-<PROJETO>" (IP: 192.168.4.1)                |
+|   └── Conexao Cliente STA: Roteador Local com Acesso a Internet                       |
+|                                                                                       |
+|   [ CORE ENGINE: maracore.cpp ]                                                       |
+|   ├── 1. Leitura do Stream HTTPS (WiFiClientSecure em modo Insecure)                  |
+|   ├── 2. Inspecao de Integridade: Byte[0] == 0xE9 (ESP32 Magic Byte)                  |
+|   ├── 3. Gravacao de Setores via esp_ota_write() no Slot Inativo                      |
+|   ├── 4. Inversao de Ponteiro de Inicializacao: esp_ota_set_boot_partition()          |
+|   └── 5. Watchdog de Validacao: 10 segundos sem crash cancela o Rollback              |
+|                                                                                       |
+|   [ MONITORAMENTO & TELEMETRIA ]                                                      |
+|   ├── Varredura I2C: Leitura de ACK nos barramentos SDA/SCL (0x01 a 0x7F)             |
+|   └── Metricas de Sistema: Heap Livre, Frequencia de Clock, RSSI e Uptime             |
++---------------------------------------------------------------------------------------+
 ```
 
 ---
 
-## 2. DIAGRAMA DE SEQUÊNCIA DO CICLO DE VIDA (UML)
+## 🔄 2. DIAGRAMA DE SEQUÊNCIA OPERACIONAL (UML)
 
-O fluxo a seguir ilustra o ciclo operacional completo, desde a requisição de atualização via interface web até a validação definitiva da imagem pelo subsistema de proteção de boot:
+O diagrama a seguir detalha o ciclo de vida completo de uma operação de Continuous Deployment executada pelo MARACORE:
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Dev as Desenvolvedor (Mobile/PC)
-    participant UI as Painel Web (/maracore)
-    participant ESP as ESP32 (MARACORE Engine)
-    participant GH as GitHub CDN (raw.githubusercontent.com)
-    participant Flash as Memória Flash SPI (app0 / app1)
+    actor Dev as Desenvolvedor (Smartphone / PC)
+    participant UI as Painel Web SPA (/maracore)
+    participant Core as MARACORE Engine (ESP32)
+    participant I2C as Barramento Fisico I2C
+    participant CDN as GitHub CDN (raw.githubusercontent.com)
+    participant Flash as Flash SPI (app0 / app1)
     participant Boot as ESP-IDF Bootloader
 
     Dev->>UI: Acessa [http://192.168.4.1/maracore](http://192.168.4.1/maracore)
-    UI->>ESP: GET /maracore/api/diagnostics
-    ESP-->>UI: Retorna JSON (Heap, Clock, Slot Ativo, Status)
+    UI->>Core: GET /maracore/api/diagnostics
+    Core-->>UI: JSON (Heap, Clock, Slot Ativo: app0, Slot Alvo: app1)
     
-    Dev->>UI: Informa nome do repositório e clica em "Gravar"
-    UI->>ESP: POST /maracore/api/github-flash (repo="******")
+    Dev->>UI: Clica em "Escanear Barramento I2C"
+    UI->>Core: GET /maracore/api/i2c-scan
+    Core->>I2C: Varredura de enderecos 0x01 a 0x7F
+    I2C-->>Core: Resposta ACK dos dispositivos (ex: 0x3C, 0x68)
+    Core-->>UI: Retorna JSON com chips detectados
     
-    activate ESP
-    ESP->>GH: GET /****** / repo / main / firmware.bin (HTTPS/TLS)
-    GH-->>ESP: HTTP 200 OK + Payload Stream
+    Dev->>UI: Informa nome do repositorio e solicita Gravacao
+    UI->>Core: POST /maracore/api/github-flash (repo="******")
     
-    ESP->>ESP: Verifica Byte[0] == 0xE9 (Magic Byte Check)
-    alt Magic Byte Inválido
-        ESP-->>UI: HTTP 500 (Erro: Binário incompatível)
-    else Magic Byte Válido (0xE9)
-        ESP->>Flash: Grava pacotes no slot inativo via esp_ota_write()
-        Flash-->>ESP: Setores gravados e confirmados
-        ESP->>Flash: Atualiza ponteiro otadata (esp_ota_set_boot_partition)
-        ESP-->>UI: HTTP 200 (Gravação bem-sucedida, reiniciando)
-        ESP->>ESP: Delay 1500ms e ESP.restart()
+    activate Core
+    Core->>CDN: GET /****** / repo / main / firmware.bin (TLS 443)
+    CDN-->>Core: Resposta HTTP 200 + Stream de Dados Binarios
+    
+    Core->>Core: Valida primeiro bloco recebido (Byte[0] == 0xE9)
+    alt Assinatura Binaria Invalida
+        Core-->>UI: HTTP 500 (Erro: Magic Byte Incompativel)
+    else Assinatura Binaria Integra (0xE9)
+        Core->>Flash: Inicializa particao alvo: esp_ota_begin(app1)
+        loop Stream de Pacotes (Blocos de 1024 Bytes)
+            Core->>Flash: esp_ota_write(dados) + yield()
+        end
+        Core->>Flash: esp_ota_end() -> Finaliza checksum
+        Core->>Flash: esp_ota_set_boot_partition(app1)
+        Core-->>UI: HTTP 200 (Sucesso: Reinicializacao Agendada)
+        Core->>Core: Delay de 1500ms e ESP.restart()
     end
-    deactivate ESP
+    deactivate Core
 
-    Note over ESP,Boot: Ciclo de Reinicialização de Hardware
-    Boot->>Flash: Lê setor otadata -> Carrega novo slot como PENDING_VERIFY
-    Boot->>ESP: Inicia execução do novo firmware
+    Note over Core,Boot: Ciclo de Reinicializacao Fisica do Microcontrolador
+    Boot->>Flash: Consulta particao otadata
+    Boot->>Flash: Inicializa app1 com flag ESP_OTA_IMG_PENDING_VERIFY
+    Boot->>Core: Executa novo Firmware (Slot app1 Ativo)
     
-    activate ESP
-    Note over ESP: Temporizador de Validação Ativo (10 segundos)
-    alt Travamento ou Crash dentro de 10s
-        Boot->>Flash: Rollback automático para o slot anterior
-    else Operação Estável por 10s
-        ESP->>Flash: Executa esp_ota_mark_app_valid_cancel_rollback()
-        Note over ESP: Firmware validado definitivamente como estável
+    activate Core
+    Note over Core: Temporizador de Integridade Iniciado (10 Segundos)
+    alt Travamento Critico ou Falha dentro da janela de 10s
+        Boot->>Flash: Reversao automatica para o slot app0 (Rollback Ativo)
+    else Operacao Estavel completada por 10 segundos
+        Core->>Flash: esp_ota_mark_app_valid_cancel_rollback()
+        Note over Core: Imagem app1 consolidada em definitivo como estavel
     end
-    deactivate ESP
-
+    deactivate Core
 ```
 
 ---
 
-## 3. TOPOLOGIA DA MEMÓRIA FLASH SPI
+## 💾 3. TOPOLOGIA DA MEMÓRIA FLASH SPI (4 MB)
 
-Para acomodar duas imagens completas de aplicação com seus respectivos cabeçalhos ELF e manter áreas dedicadas para configurações não-voláteis, a memória de 4 MB (32 Mb) é estruturada com partições simétricas:
-
-```
-0x000000 ┌────────────────────────────────────────┐
-         │ Bootloader do Fabricante (ESP-IDF)     │  36 KB
-0x009000 ├────────────────────────────────────────┤
-         │ nvs (Non-Volatile Storage)             │  20 KB  (Credenciais e Ajustes)
-0x00E000 ├────────────────────────────────────────┤
-         │ otadata (Ponteiros de Inicialização)   │   8 KB  (Controle de Rollback)
-0x010000 ├────────────────────────────────────────┤
-         │                                        │
-         │ app0 (Slot de Aplicação OTA 0)         │  1.920 KB (1,875 MB)
-         │                                        │
-0x1F0000 ├────────────────────────────────────────┤
-         │                                        │
-         │ app1 (Slot de Aplicação OTA 1)         │  1.920 KB (1,875 MB)
-         │                                        │
-0x3D0000 ├────────────────────────────────────────┤
-         │ spiffs (Sistema de Arquivos Local)     │  192 KB
-0x400000 └────────────────────────────────────────┘
+O firmware requer uma tabela simétrica com dois slots de aplicação idênticos para viabilizar a alternância do ponteiro de boot sem fragmentação de memória:
 
 ```
+Endereco Flash  Tamanho   Rotulo     Subtipo   Finalidade Operacional
+0x00000000      36 KB     bootloader boot      Codigo de inicializacao do fabricante
+0x00009000      20 KB     nvs        nvs       Parametros de rede e calibracoes salvas
+0x0000E000       8 KB     otadata    ota       Registro de controle de boot e rollback
+0x00010000    1.920 KB    app0       ota_0     Slot de execucao A (Primario / Estavel)
+0x001F0000    1.920 KB    app1       ota_1     Slot de execucao B (Continuous Deployment)
+0x003D0000     192 KB     spiffs     spiffs    Armazenamento de assets locais
+0x00400000        --      FIM        --        Limite fisico de 4 MB (32 Megabits)
+```
 
-### Configuração do Arquivo `partitions.csv`
+### Arquivo Canônico: `partitions.csv`
 
 ```csv
 # Name,   Type, SubType, Offset,   Size,     Flags
@@ -174,148 +183,68 @@ otadata,  data, ota,     0xe000,   0x2000,
 app0,     app,  ota_0,   0x10000,  0x1E0000,
 app1,     app,  ota_1,   0x1F0000, 0x1E0000,
 spiffs,   data, spiffs,  0x3D0000, 0x30000,
-
 ```
 
 ---
 
-## 4. ESPECIFICAÇÃO TÉCNICA ASD-STE100
+## 🛡️ 4. MECANISMO ANTI-BRICK E PROTEÇÃO DE BOOT
 
-O desenvolvimento do MARACORE segue os princípios do **ASD-STE100** (*Simplified Technical English* adaptado para Português Técnico):
+A arquitetura do MARACORE elimina a possibilidade de inutilização do microcontrolador caso uma imagem com erro seja descarregada:
 
-1. **Uso de Frases Diretas e Afirmativas:** Instruções operacionais evitam termos ambíguos.
-2. **Definição Única de Termos:**
-* *Slot Ativo:* Partição de memória que executa o código no momento da consulta.
-* *Slot Alvo:* Partição de memória inativa que recebe a nova imagem gravada.
-* *Rollback:* Reversão automática para a versão de firmware prévia em caso de falha.
+```
+                     [ Firmware Gravado no Slot Alvo ]
+                                     │
+                                     ▼
+                     [ Inversao do Ponteiro otadata ]
+                                     │
+                                     ▼
+                        [ Reinicializacao da CPU ]
+                                     │
+                                     ▼
+                [ Bootloader le estado: PENDING_VERIFY ]
+                                     │
+                    ┌────────────────┴────────────────┐
+                    ▼                                 ▼
+         [ Falha, Crash ou Reboot ]          [ Operacao Continua ]
+         [ antes de 10 segundos ]            [ por 10 segundos ]
+                    │                                 │
+                    ▼                                 ▼
+          [ Rollback Automatico ]           [ Rollback Cancelado ]
+          [ Bootloader ativa o ]            [ esp_ota_mark_app_valid_ ]
+          [ slot estavel anterior ]         [ cancel_rollback() ]
+```
 
-
-3. **Restrições de Memória:** O cliente seguro `WiFiClientSecure` deve operar em modo `setInsecure()` durante a conexão TLS para manter o consumo de heap abaixo de 40 KB, prevenindo esgotamento de memória no subsistema Wi-Fi.
-4. **Validação de Cabeçalho:** O sistema deve abortar o processo se o primeiro byte do fluxo binário for diferente de `0xE9`.
+1. Quando o download é finalizado, o método nativo `esp_ota_set_boot_partition()` instrui a Flash a inicializar no novo slot no próximo ciclo de energia.
+2. O bootloader inicia a imagem recém-gravada rotulando seu estado como `ESP_OTA_IMG_PENDING_VERIFY`.
+3. Se o microcontrolador reiniciar devido a falha crítica de ponteiro, estouro de memória ou interrupção de watchdog antes de 10 segundos, o hardware desfaz a alteração e restaura a imagem do slot anterior.
+4. Concluído o tempo de 10 segundos com estabilidade, o método `maracore.handle()` executa:
+   ```cpp
+   esp_ota_mark_app_valid_cancel_rollback();
+   ```
+   A imagem é validada de forma definitiva e o rollback é cancelado.
 
 ---
 
-## 5. MECANISMO DE PROTEÇÃO E ANTI-ROLLBACK
+## 🔬 5. ESPECIFICAÇÃO TÉCNICA ASD-STE100 (PT-BR)
 
-```
-                 [ Gravação no Slot Inativo Concluída ]
-                                  │
-                                  ▼
-           [ esp_ota_set_boot_partition() marca o slot ]
-                                  │
-                                  ▼
-                        [ Reinício do ESP32 ]
-                                  │
-                                  ▼
-             [ Bootloader inicia no estado PENDING_VERIFY ]
-                                  │
-                 ┌────────────────┴────────────────┐
-                 ▼                                 ▼
-         [ Falha / Travamento ]           [ Execução Estável ]
-         [ antes de 10s ]                 [ por 10 segundos ]
-                 │                                 │
-                 ▼                                 ▼
-      [ Rollback Automático ]           [ Cancela Rollback ]
-      [ Retorna ao Slot Antigo ]        [ Marca Imagem Válida ]
+Esta documentação segue a norma técnica controlada para eliminar termos polissêmicos:
 
-```
-
-O subsistema de integridade opera diretamente com as diretivas do **ESP-IDF OTA Engine**:
-
-* Ao reiniciar após a gravação, a nova partição não se torna definitiva imediatamente. Ela entra em estado de observação (`ESP_OTA_IMG_PENDING_VERIFY`).
-* Caso ocorra um *Watchdog Reset*, *Brownout* ou *Kernel Panic* antes de decorridos 10 segundos ininterruptos de execução, o circuito integrado de boot reverte o ponteiro para o slot estável anterior.
-* Transcorridos 10 segundos sem falhas, o método `maracore.handle()` executa a instrução nativa:
-```cpp
-esp_ota_mark_app_valid_cancel_rollback();
-
-```
-
-
-Isso valida a partição como a nova imagem padrão do dispositivo.
+- **Slot Ativo:** Partição de memória Flash SPI (`app0` ou `app1`) que contém as instruções executadas pela CPU no ciclo atual.
+- **Slot Alvo:** Partição de memória Flash SPI oposta à ativa, designada para receber os bytes da nova imagem binária.
+- **Magic Byte:** Primeiro byte do cabeçalho de uma imagem compilada para ESP32, cujo valor hexadecimal deve ser estritamente `0xE9`.
+- **Modo Insecure TLS:** Configuração do cliente HTTPS que ignora a árvore de certificados raiz (CA) para conservar aproximadamente 30 KB de memória SRAM livre.
+- **Rollback:** Procedimento automático do bootloader para restaurar o endereço de boot na partição previamente funcional.
 
 ---
 
-## 6. ESTRUTURA DOS ARQUIVOS DO FRAMEWORK
+## 🔌 6. DOCUMENTAÇÃO DA API REST EMBUTIDA
 
-Para manter a modularidade e garantir que todo projeto seja atualizável pelo próprio MARACORE, a estrutura do projeto deve conter os arquivos:
+O MARACORE integra um WebServer HTTP síncrono que disponibiliza os seguintes endpoints de telemetria e controle:
 
-```text
-meu-projeto-iot/
-├── partitions.csv          # Tabela simétrica de 4 MB (app0 / app1)
-├── platformio.ini          # Configurações de compilação (se usar PlatformIO)
-├── include/
-│   └── maracore.h          # Protótipos, definições de constantes e classes
-└── src/
-    ├── maracore.cpp        # Motor OTA, interface em PROGMEM e rotas REST
-    └── main.cpp            # Ponto de entrada da aplicação hospedeira
-
-```
-
----
-
-## 7. COMO INTEGRAR EM NOVOS PROJETOS
-
-A inclusão do MARACORE em qualquer firmware para ESP32 exige três passos:
-
-### Passo 1: Instanciação e Inicialização no `main.cpp`
-
-```cpp
-#include <Arduino.h>
-#include <WiFi.h>
-#include <WebServer.h>
-#include "maracore.h"
-
-// Define o identificador textual do projeto
-#define PROJECT_NAME "ESTACAO-ATALAIA"
-
-WebServer server(80);
-Maracore maracore;
-
-void setup() {
-    Serial.begin(115200);
-
-    // Inicializa o MARACORE com o nome do projeto e 10 segundos de validação
-    maracore.begin(&server, PROJECT_NAME, 10);
-
-    // Rotas específicas da sua aplicação
-    server.on("/", HTTP_GET, []() {
-        server.send(200, "text/html", "<h1>Projeto Operacional</h1><a href='/maracore'>Painel MARACORE</a>");
-    });
-
-    server.begin();
-    Serial.println(F("[SISTEMA] Servidor iniciado."));
-}
-
-void loop() {
-    // Processa conexões web
-    server.handleClient();
-
-    // Executa a supervisão de boot e agendamentos do MARACORE
-    maracore.handle();
-
-    // Rotinas normais de leitura de sensores da aplicação
-}
-
-```
-
----
-
-## 8. MANUAL DE OPERAÇÃO DA API REST EMBUTIDA
-
-O framework expõe endpoints HTTP para controle automatizado por scripts ou integração com dashboards:
-
-| Método | Endpoint | Parâmetros | Descrição da Operação |
-| --- | --- | --- | --- |
-| `GET` | `/maracore` | *Nenhum* | Retorna a Single Page Application (SPA) embutida na memória flash |
-| `GET` | `/maracore/api/diagnostics` | *Nenhum* | Retorna telemetria de hardware, memória heap e slot ativo |
-| `GET` | `/maracore/api/i2c-scan` | *Nenhum* | Executa varredura síncrona nos endereços 0x01 a 0x7F |
-| `GET` | `/maracore/api/wifi-scan` | *Nenhum* | Varre o espectro local de radiofrequência 2.4 GHz |
-| `POST` | `/maracore/api/wifi-connect` | `ssid`, `pass` | Registra novas credenciais Wi-Fi na memória NVS |
-| `POST` | `/maracore/api/github-flash` | `repo` | Inicia o download HTTPS e gravação na partição inativa |
-| `POST` | `/maracore/api/restart` | *Nenhum* | Executa reinicialização limpa do ESP32 |
-
-### Exemplo de Retorno do Endpoint `/maracore/api/diagnostics`
-
+### 1. Obter Telemetria Geral do Sistema
+- **Rota:** `GET /maracore/api/diagnostics`
+- **Cabeçalho de Resposta:** `Content-Type: application/json`
+- **Exemplo de Resposta:**
 ```json
 {
   "freeHeap": 178240,
@@ -330,47 +259,215 @@ O framework expõe endpoints HTTP para controle automatizado por scripts ou inte
   "targetSlot": "app1",
   "pendingVerify": false
 }
+```
 
+### 2. Executar Varredura no Barramento I2C
+- **Rota:** `GET /maracore/api/i2c-scan`
+- **Descrição:** Varre endereços de 1 a 127 nas linhas SDA e SCL e retorna os que responderam com bit de ACK.
+- **Exemplo de Resposta:**
+```json
+["0x3C", "0x68"]
+```
+
+### 3. Escanear Redes Wi-Fi Disponíveis
+- **Rota:** `GET /maracore/api/wifi-scan`
+- **Exemplo de Resposta:**
+```json
+[
+  {"ssid": "REDE_LABORATORIO", "rssi": -55, "secure": true},
+  {"ssid": "VISITANTES_ABERTA", "rssi": -82, "secure": false}
+]
+```
+
+### 4. Conectar a um Roteador Wi-Fi
+- **Rota:** `POST /maracore/api/wifi-connect`
+- **Corpo da Requisição (URL Encoded):**
+  - `ssid`: Nome da rede alvo
+  - `pass`: Senha de segurança (em branco para redes abertas)
+- **Exemplo de Resposta:**
+```json
+{"success": true, "msg": "Conectando ao roteador... Verifique a telemetria em instantes."}
+```
+
+### 5. Disparar Gravação Direta do GitHub
+- **Rota:** `POST /maracore/api/github-flash`
+- **Corpo da Requisição (URL Encoded):**
+  - `repo`: Nome do repositório público (ex: `atalaia-station`)
+- **Exemplo de Resposta:**
+```json
+{"success": true, "msg": "Firmware gravado com sucesso. Reinicializacao disparada."}
+```
+
+### 6. Reinicializar Hardware
+- **Rota:** `POST /maracore/api/restart`
+- **Exemplo de Resposta:**
+```json
+{"success": true, "msg": "Reiniciando microcontrolador..."}
 ```
 
 ---
 
-## 9. ORGANIZAÇÃO DOS REPOSITÓRIOS DE ORIGEM
+## 💻 7. GUIA DE IMPLEMENTAÇÃO E ARQUIVOS FONTE
 
-Para que o deploy funcione sem configurações adicionais, a estrutura do repositório no GitHub deve seguir esta convenção:
+Para que qualquer firmware possa receber atualizações futuras via nuvem, incorpore os arquivos `maracore.h` e `maracore.cpp` na raiz do seu projeto.
 
-1. **Visibilidade do Repositório:** O repositório deve ser configurado como **Público**.
-2. **Branch de Distribuição:** Os binários devem ser consolidados na branch raiz `main`.
-3. **Nome do Arquivo Binário:** O arquivo compilado gerado pela IDE ou pipeline de CI deve ser nomeado estritamente como:
-```text
-firmware.bin
+### Arquivo: `include/maracore.h`
 
+```cpp
+/**
+ * @file maracore.h
+ * @brief MARACORE Cloud Engine - Diagnostico de Hardware e OTA via GitHub
+ * @version 2.1.0
+ */
+
+#ifndef MARACORE_H
+#define MARACORE_H
+
+#include <Arduino.h>
+#include <WebServer.h>
+#include <WiFi.h>
+#include <WiFiClientSecure.h>
+#include <HTTPClient.h>
+#include <Wire.h>
+#include <esp_ota_ops.h>
+#include <esp_partition.h>
+
+#define MARACORE_GITHUB_USER    "******"
+#define MARACORE_DEFAULT_FILE   "firmware.bin"
+#define MARACORE_DEFAULT_BRANCH "main"
+
+enum MaracoreState {
+    MARACORE_IDLE = 0,
+    MARACORE_DOWNLOADING,
+    MARACORE_FLASHING,
+    MARACORE_SUCCESS,
+    MARACORE_ERROR
+};
+
+struct MaracoreDiagnostics {
+    uint32_t freeHeap;
+    uint32_t minFreeHeap;
+    uint32_t cpuFreqMHz;
+    uint32_t flashChipSize;
+    uint32_t uptimeSeconds;
+    int wifiRssi;
+    char wifiIp[16];
+    char wifiStatus[24];
+    char activeSlot[16];
+    char targetSlot[16];
+    bool isPendingVerify;
+};
+
+class Maracore {
+public:
+    Maracore();
+
+    bool begin(WebServer* server, const char* defaultProjectName = "CORE", uint32_t autoConfirmSeconds = 10);
+    void handle();
+    bool flashFromGitHub(const char* repoName, 
+                         const char* branch = MARACORE_DEFAULT_BRANCH, 
+                         const char* filename = MARACORE_DEFAULT_FILE);
+    String scanI2CBus();
+    MaracoreDiagnostics getDiagnostics();
+
+private:
+    WebServer* _server;
+    char _currentProject[32];
+    uint32_t _autoConfirmMs;
+    uint32_t _bootTimestamp;
+    bool _bootConfirmed;
+    bool _pendingRestart;
+    uint32_t _restartTime;
+
+    const esp_partition_t* _runningPartition;
+    const esp_partition_t* _targetPartition;
+
+    MaracoreState _state;
+    char _statusMessage[96];
+
+    void _registerRoutes();
+    void _handleRoot();
+    void _handleApiDiagnostics();
+    void _handleApiI2CScan();
+    void _handleApiWifiScan();
+    void _handleApiWifiConnect();
+    void _handleApiGitHubFlash();
+    void _handleApiRestart();
+    void _setupAccessPoint(const char* projectName);
+};
+
+#endif // MARACORE_H
 ```
 
+### Arquivo: `src/main.cpp` (Modelo Base Padronizado)
 
-4. **URL Canônica Montada pelo Dispositivo:**
-```text
-[https://raw.githubusercontent.com/******/](https://raw.githubusercontent.com/******/)<NOME_DO_REPOSITORIO>/main/firmware.bin
+```cpp
+#include <Arduino.h>
+#include <WiFi.h>
+#include <WebServer.h>
+#include "maracore.h"
 
+#define PROJECT_NAME "ATALAIA3"
+
+WebServer server(80);
+Maracore maracore;
+
+void setup() {
+    Serial.begin(115200);
+    delay(200);
+    Serial.println(F("\n[SISTEMA] Inicializando Firmware com integracao MARACORE..."));
+
+    // Inicializa o framework MARACORE com 10 segundos de observacao anti-brick
+    maracore.begin(&server, PROJECT_NAME, 10);
+
+    // Rotas proprias da aplicacao
+    server.on("/", HTTP_GET, []() {
+        server.send(200, "text/html",
+            "<h2>Projeto " PROJECT_NAME " Ativo</h2>"
+            "<p><a href='/maracore'>Acessar Console de Deploy MARACORE</a></p>");
+    });
+
+    server.begin();
+    Serial.println(F("[SISTEMA] Servidor HTTP operacional em [http://192.168.4.1/maracore](http://192.168.4.1/maracore)"));
+}
+
+void loop() {
+    server.handleClient();
+    maracore.handle(); // Monitora boot, rollback e reinicializacao
+}
 ```
-
-
-
-No painel `/maracore`, o usuário informa unicamente o identificador `<NOME_DO_REPOSITORIO>`. O ESP32 monta a rota, faz a negociação TLS, baixa o binário e atualiza a partição.
 
 ---
 
-## 10. SEGURANÇA E POLÍTICA DE CREDENCIAIS
+## 📂 8. ORGANIZAÇÃO DOS REPOSITÓRIOS NO GITHUB
 
-O MARACORE adota a política de segregação de segredos:
+Para que o deploy remoto execute sem necessidade de ajustes:
 
-* Nenhuma credencial de rede privada, token pessoal de API ou chave de acesso deve ser mantida de forma fixa (*hardcoded*) no código-fonte.
-* As credenciais de redes locais são fornecidas pelo usuário em tempo de execução via interface web ou API REST e gravadas na partição **NVS**, persistindo entre reinicializações e trocas de firmware.
-* O download dos binários via CDN utiliza exclusivamente tráfego criptografado por protocolo **HTTPS/TLS (Porta 443)**.
-* O framework rejeita qualquer arquivo cujo primeiro bloco de dados contenha assinatura diferente de `0xE9`, prevenindo a gravação de respostas de erro HTTP (como páginas HTML 404) dentro da memória Flash.
+1. O repositório contendo o novo firmware deve ser configurado como **Público**.
+2. O binário compilado deve ser mantido na branch raiz `main` com o nome:
+   ```text
+   firmware.bin
+   ```
+3. O ESP32 compõe automaticamente a seguinte URL segura:
+   ```text
+   [https://raw.githubusercontent.com/******/](https://raw.githubusercontent.com/******/)<nome-do-repositorio>/main/firmware.bin
+   ```
+4. No painel de controle do microcontrolador, o usuário digita apenas o nome do repositório (exemplo: `estacao-climatica`). O sistema executa o download, valida a integridade, grava a Flash e troca a partição ativa.
 
 ---
 
-**MARACORE CLOUD ENGINE // SISTEMAS EMBARCADOS DE ALTA DISPONIBILIDADE**
+<div align="center">
 
-Engenharia de Firmware desenvolvida sob a norma técnica ASD-STE100.
+<p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Bandeira_do_Maranh%C3%A3o.svg/45px-Bandeira_do_Maranh%C3%A3o.svg.png" width="30" height="20" alt="Maranhão" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Bandeira_do_Piau%C3%AD.svg/45px-Bandeira_do_Piau%C3%AD.svg.png" width="30" height="20" alt="Piauí" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/45px-Flag_of_Brazil.svg.png" width="30" height="21" alt="Brasil" />
+</p>
+
+**MARACORE CLOUD ENGINE // ENGENHARIA DE SISTEMAS EMBARCADOS**  
+*Documentação desenvolvida em conformidade com o padrão técnico ASD-STE100.*  
+*Zero Hardcoded Secrets Policy.*
+
+</div>
