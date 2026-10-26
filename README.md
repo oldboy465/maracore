@@ -26,7 +26,7 @@
 
 ---
 
-### 🌐 [ACESSAR PAINEL DE CONTROLE / DEMO ONLINE](https://******.github.io/maracore/)
+### 🌐 [ACESSAR PÁGINA DE ESPECIFICAÇÕES](https://oldboy465.github.io/maracore/)
 
 </div>
 
